@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: ./backend
+    container_name: aletheia_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - mongo
+
+  frontend:
+    build: ./frontend/user-ui
+    container_name: aletheia_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/user-ui:/app
+    stdin_open: true
+    tty: true
+
+  mongo:
+    image: mongo:latest
+    container_name: aletheia_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
