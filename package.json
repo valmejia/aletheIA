@@ -1,0 +1,8 @@
+{
+  "name": "aletheIA",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/valmejia/aletheIA.git",
+  "author": "Valeria Mejia <valemega.vox@gmail.com>",
+  "license": "MIT"
+}
