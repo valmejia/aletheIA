@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   backend:
     build: ./backend
@@ -7,17 +9,31 @@ services:
     volumes:
       - ./backend:/app
     env_file:
-      - ./backend/.env
+      - .env
     depends_on:
       - mongo
 
-  frontend:
+  user-ui:
     build: ./frontend/user-ui
-    container_name: aletheia_frontend
+    container_name: aletheia_user_ui
     ports:
       - "3000:3000"
     volumes:
       - ./frontend/user-ui:/app
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+
+  legal-ui:
+    build: ./frontend/legal-ui
+    container_name: aletheia_legal_ui
+    ports:
+      - "3001:3000"  # El puerto interno de Vite es 3000 por defecto
+    volumes:
+      - ./frontend/legal-ui:/app
+    env_file:
+      - .env
     stdin_open: true
     tty: true
 
@@ -28,6 +44,9 @@ services:
       - "27017:27017"
     volumes:
       - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
 
 volumes:
   mongo_data:

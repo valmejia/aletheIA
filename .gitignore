@@ -1,0 +1,68 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.pnpm-debug.log*
+
+# Build
+dist/
+build/
+.vite/
+.vitepress/dist/
+coverage/
+
+# TypeScript
+*.tsbuildinfo
+
+# Env files
+.env
+.env.*
+
+# Logs
+*.log
+logs/
+
+# IDEs
+.vscode/
+.idea/
+*.sw?
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+**/Dockerfile
+**/docker-compose.yml
+**/.docker/
+
+# Next.js (por si en algún momento lo usás)
+.next/
+out/
+
+# Testing
+jest-coverage/
+cypress/videos/
+cypress/screenshots/
+playwright-report/
+
+# Python (por si backend también se toca con esto)
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.Python
+.venv/
+venv/
+
+# MongoDB (por si tenés dumps locales o temporales)
+dump/
+
+#env
+.env 
