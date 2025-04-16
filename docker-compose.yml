@@ -18,8 +18,6 @@ services:
     container_name: aletheia_user_ui
     ports:
       - "3000:3000"
-    volumes:
-      - ./frontend/user-ui:/app
     env_file:
       - .env
     stdin_open: true
@@ -30,8 +28,6 @@ services:
     container_name: aletheia_legal_ui
     ports:
       - "3001:3000"  # El puerto interno de Vite es 3000 por defecto
-    volumes:
-      - ./frontend/legal-ui:/app
     env_file:
       - .env
     stdin_open: true
@@ -47,6 +43,22 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.1
+    container_name: aletheia_keycloak
+    command: start-dev --import-realm
+    environment:
+      - KEYCLOAK_ADMIN=${KEYCLOAK_ADMIN}
+      - KEYCLOAK_ADMIN_PASSWORD=${KEYCLOAK_ADMIN_PASSWORD}
+      - KC_DB=dev-file
+    volumes:
+      - ./keycloak/realm-config:/opt/keycloak/data/import
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongo
+
 
 volumes:
   mongo_data:
