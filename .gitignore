@@ -34,15 +34,6 @@ logs/
 .DS_Store
 Thumbs.db
 
-# Docker
-**/Dockerfile
-**/docker-compose.yml
-**/.docker/
-
-# Next.js (por si en algún momento lo usás)
-.next/
-out/
-
 # Testing
 jest-coverage/
 cypress/videos/
@@ -59,9 +50,6 @@ __pycache__/
 .Python
 .venv/
 venv/
-
-# MongoDB (por si tenés dumps locales o temporales)
-dump/
 
 #env
 .env 
