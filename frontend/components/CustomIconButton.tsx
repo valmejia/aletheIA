@@ -1,8 +1,8 @@
 import React from "react";
-import { IconButton } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 
-const CustomIconButton: React.FC = ({ children, ...props }) => {
-  return <IconButton {...props}>{children}</IconButton>;
+const CustomIconButton: React.FC<IconButtonProps> = ({ ...props }) => {
+  return <IconButton {...props} />;
 };
 
 export default CustomIconButton;
