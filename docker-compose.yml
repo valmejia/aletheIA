@@ -2,14 +2,11 @@ version: '3.8'
 
 services:
   backend:
-    build: ./backend
+    build:
+      context: ./backend
     container_name: aletheia_backend
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./backend:/app
     env_file:
-      - .env
+      - ./backend/.env
     depends_on:
       - mongo
 
@@ -58,6 +55,7 @@ services:
       - "8080:8080"
     depends_on:
       - mongo
+
 
 
 volumes:
