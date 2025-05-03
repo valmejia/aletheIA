@@ -1,6 +1,6 @@
 import { fn } from "@storybook/test";
 import CustomIconButton from "../components/CustomIconButton";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { CloudUpload } from "@mui/icons-material";
 
 export default {
   title: "Components/IconButton",
@@ -8,7 +8,7 @@ export default {
   parameters: {
     layout: "centered",
   },
-
+  tags: ["autodocs"],
   argTypes: {
     backgroundColor: { control: "color" },
   },
@@ -16,36 +16,33 @@ export default {
   args: { onClick: fn() },
 };
 
-export const Small = {
+export const Default = {
   args: {
-    size: "small",
-    children: <DeleteIcon />,
+    children: <CloudUpload />,
   },
 };
 
-export const Medium = {
+export const Small = {
   args: {
-    size: "medium",
-    children: <DeleteIcon />,
+    children: <CloudUpload fontSize="small" />,
   },
 };
 export const Large = {
   args: {
     size: "large",
-    children: <DeleteIcon />,
+    children: <CloudUpload fontSize="inherit" />,
   },
 };
-
 export const Primary = {
   args: {
     color: "primary",
-    children: <DeleteIcon />,
+    children: <CloudUpload />,
   },
 };
 
 export const Secondary = {
   args: {
     color: "secondary",
-    children: <DeleteIcon />,
+    children: <CloudUpload />,
   },
 };
