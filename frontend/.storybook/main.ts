@@ -1,15 +1,24 @@
-import type { StorybookConfig } from '@storybook/react-vite';
-
-const config: StorybookConfig = {
-  framework: '@storybook/react-vite',
-  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
-  addons: [
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
-    '@storybook/experimental-addon-test',
-    '@storybook/experimental-addon-test'
+/** @type { import('@storybook/react-vite').StorybookConfig } */
+const config = {
+  stories: [
+    "../stories/**/*.mdx",
+    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+  addons: [
+    "@storybook/addon-essentials",
+    "@storybook/addon-onboarding",
+    "@chromatic-com/storybook",
+  ],
+  framework: {
+    name: "@storybook/react-vite",
+    options: {},
+  },
+  viteFinal: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "@mui/icons-material": "@mui/icons-material/2.0.0",
+    };
+    return config;
+  },
 };
-
 export default config;
