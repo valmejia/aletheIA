@@ -1,49 +1,69 @@
-import { fn } from '@storybook/test';
+import { fn } from "@storybook/test";
+import Button from "../components/Button";
 
-import { Button } from './Button';
-
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 export default {
-  title: 'Example/Button',
+  title: "Components/Button",
   component: Button,
   parameters: {
-    // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
-    layout: 'centered',
+    layout: "centered",
   },
-  // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
-  tags: ['autodocs'],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
+
   argTypes: {
-    backgroundColor: { control: 'color' },
+    backgroundColor: { control: "color" },
   },
-  // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
+
   args: { onClick: fn() },
 };
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Primary = {
+export const Text = {
   args: {
-    primary: true,
-    label: 'Button',
+    label: "Button",
+    variant: "text",
+  },
+};
+export const Outlined = {
+  args: {
+    label: "Button",
+    variant: "outlined",
   },
 };
 
-export const Secondary = {
+export const Contained = {
   args: {
-    label: 'Button',
-  },
-};
-
-export const Large = {
-  args: {
-    size: 'large',
-    label: 'Button',
+    label: "Button",
+    variant: "contained",
   },
 };
 
 export const Small = {
   args: {
-    size: 'small',
-    label: 'Button',
+    size: "small",
+    label: "Button",
+  },
+};
+export const Medium = {
+  args: {
+    size: "medium",
+    label: "Button",
+  },
+};
+export const Large = {
+  args: {
+    size: "large",
+    label: "Button",
+  },
+};
+
+export const Primary = {
+  args: {
+    color: "primary",
+    label: "Button",
+  },
+};
+
+export const Secondary = {
+  args: {
+    color: "secondary",
+    label: "Button",
   },
 };
