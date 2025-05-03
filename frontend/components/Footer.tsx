@@ -1,8 +1,8 @@
 import React from "react";
 import CustomButton from "./Button";
 import {Grid, ImageListItem, Stack, Typography} from "@mui/material";
-import ButtonWithIcon from "./ButtonWithIcon";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import GradientButton from "./gradientButton";
 
 /* TODO: href buttons */
 const Footer = () => {
@@ -21,7 +21,7 @@ const Footer = () => {
           </Typography>
         </Grid>
         <Grid marginTop={3}>
-          <ButtonWithIcon
+          <GradientButton
             label="Eliminar contenido"
             endIcon={<ArrowForwardIcon />}
             size="small"
