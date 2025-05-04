@@ -1,19 +1,26 @@
 import React from "react";
-import { Button, ButtonProps, Grid } from "@mui/material";
+import { Button, ButtonProps as MuiButtonProps, Grid } from "@mui/material";
 
-interface ButtonProps extends ButtonProps {
+interface CustomButtonProps extends MuiButtonProps {
   label: string;
+  labelColor?: string;
 }
 
-const CustomButton: React.FC<ButtonProps> = ({
+const CustomButton: React.FC<CustomButtonProps> = ({
   label,
   size,
   color,
+  labelColor,
   ...props
 }) => {
   return (
     <Grid>
-      <Button variant="contained" size={size} {...props}>
+      <Button
+        variant="contained"
+        size={size}
+        sx={{ color: labelColor || "primary" }}
+        {...props}
+      >
         {label}
       </Button>
     </Grid>
