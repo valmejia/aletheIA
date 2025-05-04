@@ -36,6 +36,7 @@ const Footer = () => {
               <CustomButton
                 variant="text"
                 label="Preguntas frecuentes"
+                labelColor="black"
               ></CustomButton>
             </Grid>
             <Grid marginLeft={1}>
@@ -51,6 +52,7 @@ const Footer = () => {
               <CustomButton
                 variant="text"
                 label="Soporte técnico"
+                labelColor="black"
               ></CustomButton>
             </Grid>
             <Grid>
@@ -68,6 +70,7 @@ const Footer = () => {
               <CustomButton
                 variant="text"
                 label="¿Quiénes somos?"
+                labelColor="black"
               ></CustomButton>
             </Grid>
             <Grid>
@@ -80,7 +83,11 @@ const Footer = () => {
 
           <Grid direction="column">
             <Grid>
-              <CustomButton variant="text" label="Misión"></CustomButton>
+              <CustomButton
+                labelColor="black"
+                variant="text"
+                label="Misión"
+              ></CustomButton>
             </Grid>
             <Grid marginLeft={1}>
               <Typography variant="body2">
@@ -93,7 +100,11 @@ const Footer = () => {
         <Stack direction="column" spacing={5} margin={7}>
           <Grid direction="column">
             <Grid direction="column">
-              <CustomButton variant="text" label="Nuestro blog"></CustomButton>
+              <CustomButton
+                labelColor="black"
+                variant="text"
+                label="Nuestro blog"
+              ></CustomButton>
             </Grid>
             <Grid marginLeft={1}>
               <Typography variant="body2">
@@ -106,6 +117,7 @@ const Footer = () => {
           <Grid direction="column">
             <Grid>
               <CustomButton
+                labelColor="black"
                 variant="text"
                 label="Nuestro equipo"
               ></CustomButton>
