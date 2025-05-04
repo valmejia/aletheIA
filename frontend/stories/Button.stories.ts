@@ -7,7 +7,7 @@ export default {
   parameters: {
     layout: "centered",
   },
-
+  tags: ["autodocs"],
   argTypes: {
     backgroundColor: { control: "color" },
   },
@@ -19,6 +19,13 @@ export const Text = {
   args: {
     label: "Button",
     variant: "text",
+  },
+};
+export const TextBlackLabel = {
+  args: {
+    label: "Button",
+    variant: "text",
+    labelColor: "black",
   },
 };
 export const Outlined = {
