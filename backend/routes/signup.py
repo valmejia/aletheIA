@@ -45,8 +45,7 @@ async def create_user(data: SignupRequest, token: str):
     url = f"{os.getenv('KEYCLOAK_URL')}/admin/realms/{os.getenv('KEYCLOAK_REALM')}/users"
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     payload = {
-        "username": data.email,
-        "firstName": data.name,
+        "name": data.name,
         "email": data.email,
         "enabled": True,
         "credentials": [{"type": "password", "value": data.password, "temporary": False}]
