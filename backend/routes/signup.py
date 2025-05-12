@@ -10,9 +10,11 @@ load_dotenv()
 router = APIRouter()
 
 class SignupRequest(BaseModel):
-    name: str
+    first_name: str
+    last_name: str
     email: str
     password: str
+    username: str
 
 @router.post("/signup")
 async def signup_user(signup_data: SignupRequest):
@@ -29,15 +31,14 @@ async def get_admin_token():
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     data = {
         "client_id": "aletheia-user",
-        "username": os.getenv("KEYCLOAK_ADMIN_USER"),
-        "password": os.getenv("KEYCLOAK_ADMIN_PASSWORD"),
-        "grant_type": "password",
+        "client_secret": os.getenv("KEYCLOAK_CLIENT_SECRET"),
+        "grant_type": "client_credentials",
     }
     async with httpx.AsyncClient() as client:
         res = await client.post(url, data=data, headers=headers)
         if res.status_code != 200:
             print(f"Error obteniendo token: {res.status_code} - {res.text}")
-            raise HTTPException(status_code=500, detail="Error obteniendo token")
+            raise HTTPException(status_code=500, detail=f"Error obteniendo token: {res.text}")
         return res.json().get("access_token")
 
 
@@ -45,8 +46,10 @@ async def create_user(data: SignupRequest, token: str):
     url = f"{os.getenv('KEYCLOAK_URL')}/admin/realms/{os.getenv('KEYCLOAK_REALM')}/users"
     headers = {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
     payload = {
-        "name": data.name,
+        "firstName": data.first_name,
+        "lastName": data.last_name,
         "email": data.email,
+        "username": data.email,
         "enabled": True,
         "credentials": [{"type": "password", "value": data.password, "temporary": False}]
     }
@@ -62,4 +65,3 @@ async def save_user_to_db(user: SignupRequest):
     if existing:
         raise HTTPException(status_code=409, detail="El correo ya está registrado.")
     await users_collection.insert_one(user.dict())
-
