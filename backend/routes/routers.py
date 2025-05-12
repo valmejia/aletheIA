@@ -3,6 +3,6 @@ from .signup import router as signup_router
 
 auth_router = APIRouter()
 
-auth_router.include_router(signup_router, prefix="/signup")
+auth_router.include_router(signup_router, prefix="/auth")
 
-all_routers = [auth_router]
+all_routers = [auth_router,signup_router]

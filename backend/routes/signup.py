@@ -62,3 +62,4 @@ async def save_user_to_db(user: SignupRequest):
     if existing:
         raise HTTPException(status_code=409, detail="El correo ya está registrado.")
     await users_collection.insert_one(user.dict())
+
