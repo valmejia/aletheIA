@@ -7,14 +7,14 @@ from db import users_collection
 
 load_dotenv()
 
-router = APIRouter()
-
 class SignupRequest(BaseModel):
     first_name: str
     last_name: str
     email: str
     password: str
     username: str
+
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 @router.post("/signup")
 async def signup_user(signup_data: SignupRequest):
@@ -32,7 +32,9 @@ async def get_admin_token():
     data = {
         "client_id": "aletheia-user",
         "client_secret": os.getenv("KEYCLOAK_CLIENT_SECRET"),
-        "grant_type": "client_credentials",
+        "grant_type": "password",
+        "username": "valmejiag",
+            "password": "admin12345"
     }
     async with httpx.AsyncClient() as client:
         res = await client.post(url, data=data, headers=headers)
@@ -63,5 +65,15 @@ async def create_user(data: SignupRequest, token: str):
 async def save_user_to_db(user: SignupRequest):
     existing = await users_collection.find_one({"email": user.email})
     if existing:
-        raise HTTPException(status_code=409, detail="El correo ya está registrado.")
-    await users_collection.insert_one(user.dict())
+        raise HTTPException(status_code=400, detail="El usuario ya existe")
+
+    result = await users_collection.insert_one(user.dict())
+    if result.inserted_id:
+        return True
+    raise HTTPException(status_code=500, detail="No se pudo guardar el usuario")
+
+signup_router = router
+
+
+
+

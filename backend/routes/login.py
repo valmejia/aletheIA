@@ -3,11 +3,12 @@ from pydantic import BaseModel
 import httpx
 import os
 
-router = APIRouter()
+router = APIRouter(prefix="/auth", tags=["auth"])
 
 class LoginRequest(BaseModel):
     email: str
     password: str
+
 
 @router.post("/login")
 async def login_user(login_data: LoginRequest):

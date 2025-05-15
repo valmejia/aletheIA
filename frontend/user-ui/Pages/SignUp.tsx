@@ -5,17 +5,34 @@ import {
   FormControlLabel,
   FormGroup,
   Grid,
+  IconButton,
+  InputAdornment,
   Stack,
   Typography,
 } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
 
 export default function SignUp() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    termsAccepted: false,
+  });
 
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.checked });
   };
 
   const validatePassword = (password: string) => {
@@ -25,8 +42,13 @@ export default function SignUp() {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.email || !form.password) {
-      alert("Por favor complete todos los campos"); // TODO: HACER EN BONITO -A-
+    if (!form.firstName || !form.lastName || !form.email || !form.password) {
+      alert("Por favor complete todos los campos");
+      return;
+    }
+
+    if (!form.termsAccepted) {
+      alert("Debe aceptar los términos y condiciones.");
       return;
     }
 
@@ -35,78 +57,127 @@ export default function SignUp() {
       return;
     }
 
-    const response = await fetch("http://localhost:8000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(form),
-    });
+    setLoading(true); // Activa loading
 
-    if (response.ok) {
-      alert("Usuario creado con éxito");
-    } else {
-      const errorData = await response.json();
-      alert(`Error: ${errorData.detail}`);
+    try {
+      const payload = {
+        first_name: form.firstName,
+        last_name: form.lastName,
+        email: form.email,
+        password: form.password,
+        username: form.email,
+      };
+
+      const response = await fetch("http://localhost:8000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        alert("Usuario creado con éxito");
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.detail}`);
+      }
+    } catch (error) {
+      console.error("Error en la petición:", error);
+      alert("Ocurrió un error al crear la cuenta.");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const passwordChecks = {
+    length: form.password.length >= 8,
+    number: /\d/.test(form.password),
+    uppercase: /[A-Z]/.test(form.password),
+    specialChar: /[!@#$%^&*()_+]/.test(form.password),
   };
 
   return (
     <Grid margin={2} display="flex" flexDirection="column">
       <Grid marginTop={2}>
-        <Typography variant="h3"> Crear cuenta</Typography>
+        <Typography variant="h3">Crear cuenta</Typography>
       </Grid>
       <Stack marginTop={2}>
         <TextField
           onChange={handleChange}
-          value={form.name}
-          label="Nombre completo"
-          name="name"
-        ></TextField>{" "}
+          value={form.firstName}
+          label="Nombre"
+          name="firstName"
+        />
+      </Stack>
+      <Stack marginTop={2}>
+        <TextField
+          onChange={handleChange}
+          value={form.lastName}
+          label="Apellidos"
+          name="lastName"
+        />
       </Stack>
       <Stack marginTop={2}>
         <TextField
           onChange={handleChange}
           value={form.email}
-          label="Correo electronico"
+          label="Correo electrónico"
           name="email"
-        ></TextField>
+        />
       </Stack>
       <Stack marginTop={2}>
         <TextField
           value={form.password}
           onChange={handleChange}
           label="Contraseña"
-          type="password"
-          name="password" // TODO: Q SE VEA EL PW
-        ></TextField>
+          type={showPassword ? "text" : "password"}
+          name="password"
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
       </Stack>
 
-      <Grid display="flex" justifyContent="space-evenly" margin={2}>
-        <Grid display="flex" justifyContent="row" alignContent="center">
-          <ClearIcon />
-          <Typography variant="body2">Minimo 8 caracteres</Typography>
-        </Grid>
-
-        <Grid display="flex" justifyContent="row" alignContent="center">
-          <ClearIcon />
-          <Typography variant="body2">1 número </Typography>
-        </Grid>
-
-        <Grid display="flex" justifyContent="row" alignContent="center">
-          <ClearIcon />
-          <Typography variant="body2">1 Mayúscula </Typography>
-        </Grid>
-        <Grid display="flex" justifyContent="row" alignContent="center">
-          <ClearIcon />
-          <Typography variant="body2">1 Caracter especial</Typography>
-        </Grid>
+      <Grid container spacing={1} marginY={2}>
+        {[
+          { label: "Mínimo 8 caracteres", valid: passwordChecks.length },
+          { label: "1 número", valid: passwordChecks.number },
+          { label: "1 mayúscula", valid: passwordChecks.uppercase },
+          { label: "1 caracter especial", valid: passwordChecks.specialChar },
+        ].map(({ label, valid }) => (
+          <Grid item xs={6} key={label} display="flex" alignItems="center">
+            {valid ? (
+              <CheckIcon color="success" />
+            ) : (
+              <ClearIcon color="error" />
+            )}
+            <Typography variant="body2" marginLeft={1}>
+              {label}
+            </Typography>
+          </Grid>
+        ))}
       </Grid>
 
       <FormGroup>
         <FormControlLabel
           required
-          control={<Checkbox />}
+          control={
+            <Checkbox
+              name="termsAccepted"
+              checked={form.termsAccepted}
+              onChange={handleCheckboxChange}
+            />
+          }
           label="Acepto los términos y condiciones"
         />
       </FormGroup>
@@ -115,9 +186,10 @@ export default function SignUp() {
         <GradientButton
           size="large"
           fullWidth
-          label="Crear cuenta"
+          label={loading ? "Creando cuenta..." : "Crear cuenta"}
           onClick={handleSubmit}
-        ></GradientButton>
+          disabled={loading}
+        />
       </Stack>
     </Grid>
   );

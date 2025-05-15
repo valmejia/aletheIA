@@ -18,6 +18,7 @@ export default function LogIn() {
     const response = await fetch("http://localhost:8000/auth/signup", {
       method: "POST",
       headers: {
+        mode: "cors",
         "Content-Type": "application/json",
       },
       body: JSON.stringify(form),

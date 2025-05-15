@@ -1,13 +1,11 @@
-from pymongo import MongoClient
+# db.py
+from motor.motor_asyncio import AsyncIOMotorClient
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
 
-mongo_url = os.getenv("MONGODB_URL", "mongodb://localhost:27017")
-
-client = MongoClient(mongo_url)
-
-db = client.get_database("aletheia_db")
-
-users_collection = db.users
+MONGODB_URI = os.getenv("MONGODB_URI", "mongodb://localhost:27017")
+client = AsyncIOMotorClient(MONGODB_URI)
+db = client["aletheia_db"]
+users_collection = db["users"]
