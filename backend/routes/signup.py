@@ -34,7 +34,7 @@ async def get_admin_token():
         "client_secret": os.getenv("KEYCLOAK_CLIENT_SECRET"),
         "grant_type": "password",
         "username": "valmejiag",
-            "password": "admin12345"
+        "password": "admin12345"
     }
     async with httpx.AsyncClient() as client:
         res = await client.post(url, data=data, headers=headers)

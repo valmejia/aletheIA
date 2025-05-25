@@ -1,8 +1,6 @@
 import GradientButton from "../../components/gradientButton";
 import TextField from "../../components/TextField";
 import {
-  Checkbox,
-  FormControlLabel,
   FormGroup,
   Grid,
   IconButton,
@@ -15,8 +13,12 @@ import CheckIcon from "@mui/icons-material/Check";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import GradientCheckbox from "../../components/GradientCheckbox";
 
 export default function SignUp() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
@@ -25,14 +27,27 @@ export default function SignUp() {
     termsAccepted: false,
   });
 
+  const [errors, setErrors] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    termsAccepted: false,
+  });
+
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Quitar error si el usuario escribe algo
+    setErrors({ ...errors, [e.target.name]: false });
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.checked });
+    setErrors({ ...errors, [e.target.name]: false });
   };
 
   const validatePassword = (password: string) => {
@@ -42,22 +57,26 @@ export default function SignUp() {
   };
 
   const handleSubmit = async () => {
-    if (!form.firstName || !form.lastName || !form.email || !form.password) {
-      alert("Por favor complete todos los campos");
-      return;
-    }
+    setServerError(null);
 
-    if (!form.termsAccepted) {
-      alert("Debe aceptar los términos y condiciones.");
-      return;
-    }
+    const newErrors = {
+      firstName: !form.firstName,
+      lastName: !form.lastName,
+      email: !form.email,
+      password: !form.password,
+      termsAccepted: !form.termsAccepted,
+    };
+
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error)) return;
 
     if (!validatePassword(form.password)) {
-      alert("La contraseña no cumple con los requisitos mínimos.");
+      setErrors((prev) => ({ ...prev, password: true }));
       return;
     }
 
-    setLoading(true); // Activa loading
+    setLoading(true);
 
     try {
       const payload = {
@@ -77,14 +96,15 @@ export default function SignUp() {
       });
 
       if (response.ok) {
-        alert("Usuario creado con éxito");
+        setServerError(null);
+        navigate("/home");
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.detail}`);
+        setServerError(errorData.detail || "Error desconocido");
       }
     } catch (error) {
       console.error("Error en la petición:", error);
-      alert("Ocurrió un error al crear la cuenta.");
+      setServerError("Ocurrió un error al crear la cuenta.");
     } finally {
       setLoading(false);
     }
@@ -98,7 +118,7 @@ export default function SignUp() {
   };
 
   return (
-    <Grid margin={2} display="flex" flexDirection="column">
+    <Grid margin={2} display="flex" flexDirection="column" container>
       <Grid marginTop={2}>
         <Typography variant="h3">Crear cuenta</Typography>
       </Grid>
@@ -108,6 +128,8 @@ export default function SignUp() {
           value={form.firstName}
           label="Nombre"
           name="firstName"
+          error={errors.firstName}
+          helperText={errors.firstName && "El nombre es obligatorio"}
         />
       </Stack>
       <Stack marginTop={2}>
@@ -116,6 +138,8 @@ export default function SignUp() {
           value={form.lastName}
           label="Apellidos"
           name="lastName"
+          error={errors.lastName}
+          helperText={errors.lastName && "El apellido es obligatorio"}
         />
       </Stack>
       <Stack marginTop={2}>
@@ -124,6 +148,8 @@ export default function SignUp() {
           value={form.email}
           label="Correo electrónico"
           name="email"
+          error={errors.email}
+          helperText={errors.email && "El correo electrónico es obligatorio"}
         />
       </Stack>
       <Stack marginTop={2}>
@@ -133,6 +159,12 @@ export default function SignUp() {
           label="Contraseña"
           type={showPassword ? "text" : "password"}
           name="password"
+          error={errors.password}
+          helperText={
+            errors.password
+              ? "La contraseña no cumple con los requisitos mínimos"
+              : ""
+          }
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
@@ -169,18 +201,26 @@ export default function SignUp() {
       </Grid>
 
       <FormGroup>
-        <FormControlLabel
-          required
-          control={
-            <Checkbox
-              name="termsAccepted"
-              checked={form.termsAccepted}
-              onChange={handleCheckboxChange}
-            />
-          }
-          label="Acepto los términos y condiciones"
+        <GradientCheckbox
+          name="termsAccepted"
+          checked={form.termsAccepted}
+          onChange={handleCheckboxChange}
+          label="Acepto los términos y condiciones*"
+          error={errors.termsAccepted}
+          disabled={loading}
         />
+        {errors.termsAccepted && (
+          <Typography variant="caption" color="error" sx={{ marginLeft: 1 }}>
+            Debe aceptar los términos y condiciones
+          </Typography>
+        )}
       </FormGroup>
+
+      {serverError && (
+        <Typography variant="body2" color="error" sx={{ mt: 1 }}>
+          {serverError}
+        </Typography>
+      )}
 
       <Stack marginTop={2}>
         <GradientButton
