@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.routers import all_routers
 from dotenv import load_dotenv
+from starlette.middleware.sessions import SessionMiddleware
+import os
 
 load_dotenv()
 
@@ -14,6 +16,12 @@ app.add_middleware(
     allow_methods=["GET", "POST", "OPTIONS", "PUT", "DELETE"],
     allow_headers=["*"],
 )
+
+app.add_middleware(
+    SessionMiddleware,
+    secret_key=os.getenv("SESSION_SECRET_KEY")
+)
+
 
 @app.get("/")
 async def root():

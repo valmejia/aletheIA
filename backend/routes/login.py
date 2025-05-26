@@ -1,4 +1,5 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request, Response
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 import httpx
 import os
@@ -10,14 +11,14 @@ class LoginRequest(BaseModel):
     password: str
 
 @router.post("/login")
-async def login_user(login_data: LoginRequest):
+async def login_user(login_data: LoginRequest, request: Request):
     url = os.getenv("KEYCLOAK_TOKEN_URL")
     if not url:
         raise HTTPException(status_code=500, detail="KEYCLOAK_TOKEN_URL no está configurado en las variables de entorno.")
 
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     data = {
-        "client_id": "aletheia-user",
+        "client_id": "aletheia-user",  
         "grant_type": "password",
         "username": login_data.email,
         "password": login_data.password
@@ -30,10 +31,8 @@ async def login_user(login_data: LoginRequest):
             print(f"Error de conexión con Keycloak: {e}")
             raise HTTPException(status_code=503, detail="No se pudo conectar con el servidor de autenticación.")
 
-        # Si hubo error, intentamos entender la causa
         if res.status_code != 200:
             print(f"Keycloak error response: {res.status_code} - {res.text}")
-
             try:
                 error_response = res.json()
                 error_description = error_response.get("error_description", "").lower()
@@ -49,5 +48,19 @@ async def login_user(login_data: LoginRequest):
             else:
                 raise HTTPException(status_code=401, detail="No autorizado: error de autenticación.")
 
-        # Si es exitoso, devolvemos el token
-        return res.json()
+        token_response = res.json()
+        access_token = token_response.get("access_token")
+
+
+        response = JSONResponse(content={"message": "Login exitoso"})
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            secure=False,
+            samesite="Lax",
+            max_age=3600,
+            path="/"
+        )
+
+        return response

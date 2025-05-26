@@ -1,4 +1,3 @@
-import TextField from "../../components/TextField";
 import {
   Grid,
   IconButton,
@@ -8,8 +7,9 @@ import {
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import GradientButton from "../../components/gradientButton";
+import TextField from "../../components/TextField";
 import { useNavigate } from "react-router-dom";
 
 export default function LogIn() {
@@ -17,38 +17,50 @@ export default function LogIn() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const didCheckSession = useRef(false);
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async () => {
     if (!form.email || !form.password) {
-      alert("Por favor complete todos los campos");
+      alert("Por favor completa todos los campos.");
       return;
     }
 
     setLoading(true);
 
     try {
+      const sessionRes = await fetch(
+        "http://localhost:8000/auth/check-session",
+        {
+          credentials: "include",
+        },
+      );
+
+      if (sessionRes.ok) {
+        navigate("/home");
+        return;
+      }
+
       const response = await fetch("http://localhost:8000/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
+        credentials: "include",
       });
 
+      console.log("Respuesta del login:", response.status);
+
       if (response.ok) {
-        // Redirigir a /home
         navigate("/home");
       } else {
-        const errorData = await response.json();
-        alert(`Error: ${errorData.detail || "Error en autenticación"}`);
+        const data = await response.json();
+        alert(data.detail || "Credenciales incorrectas");
       }
     } catch (error) {
       console.error("Error en la petición:", error);
-      alert("Ocurrió un error al iniciar sesión.");
+      alert("Error al intentar iniciar sesión.");
     } finally {
       setLoading(false);
     }
@@ -90,7 +102,6 @@ export default function LogIn() {
           }}
         />
       </Stack>
-
       <Stack marginTop={2}>
         <GradientButton
           variant="contained"
