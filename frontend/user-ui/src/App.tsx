@@ -4,6 +4,7 @@ import LogIn from "../Pages/LogIn";
 import Home from "../Pages/Home";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import keycloak from "./keycloak";
+import LandingPage from "../../components/LandingPage";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path="/auth/signup" element={<SignUp />} />
           <Route path="/auth/login" element={<LogIn />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/" element={<LandingPage />} />
         </Routes>
       </Router>
     </ReactKeycloakProvider>
