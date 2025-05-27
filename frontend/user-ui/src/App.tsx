@@ -5,6 +5,7 @@ import Home from "../Pages/Home";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 import keycloak from "./keycloak";
 import LandingPage from "../../components/LandingPage";
+import Analize from "../Pages/Analize";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <Route path="/auth/login" element={<LogIn />} />
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/analisis" element={<Analize />} />
         </Routes>
       </Router>
     </ReactKeycloakProvider>

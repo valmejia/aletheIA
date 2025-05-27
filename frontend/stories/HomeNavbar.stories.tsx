@@ -1,8 +1,8 @@
-import HomeNavbar from "../components/HomeNavbar";
+import Home from "../components/Home";
 
 export default {
-  title: "Components/HomeNavbar",
-  component: HomeNavbar,
+  title: "Components/Home",
+  component: Home,
   tags: ["autodocs"],
 
   argTypes: {
@@ -10,4 +10,4 @@ export default {
   },
 };
 
-export const Default = () => <HomeNavbar />;
+export const Default = () => <Home />;

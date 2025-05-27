@@ -1,13 +1,13 @@
 import { useKeycloak } from "@react-keycloak/web";
 import { Grid } from "@mui/material";
-import HomeNavbar from "../../components/HomeNavbar";
+import CustomDashboardLayout from "../../components/CustomDashboardLayout";
 
 export default function Home() {
   const { keycloak } = useKeycloak();
 
   return (
     <Grid>
-      <HomeNavbar />
+      <CustomDashboardLayout />
     </Grid>
   );
 }
