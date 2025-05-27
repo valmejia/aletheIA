@@ -1,15 +1,13 @@
-import { Grid, ImageListItem } from "@mui/material";
+import { Grid } from "@mui/material";
+import * as React from "react";
+import CustomDashboardLayout from "./CustomDashboardLayout";
 
 const HomeNavbar = () => {
   return (
     <Grid>
-      <Grid>
-        <ImageListItem sx={{ width: 188, height: 44 }}>
-          <img alt="aletheia logo" src="../public/img/AlétheIABlack.svg" />
-        </ImageListItem>
-      </Grid>
-
-      <Grid></Grid>
+      <CustomDashboardLayout>
+        <Grid container spacing={2}></Grid>
+      </CustomDashboardLayout>
     </Grid>
   );
 };
