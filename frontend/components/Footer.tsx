@@ -25,6 +25,7 @@ const Footer = () => {
             label="Eliminar contenido"
             endIcon={<ArrowForwardIcon />}
             size="small"
+            href="/auth/login"
           />
         </Grid>
       </Grid>

@@ -59,12 +59,14 @@ const NavBar = () => {
           <GradientButton
             variant="outlined"
             label="Iniciar sesión"
+            href="/auth/login"
           ></GradientButton>
         </Grid>
         <Grid margin={1}>
           <GradientButton
             variant="contained"
             label="Crear cuenta"
+            href="/auth/signup"
           ></GradientButton>
         </Grid>
       </Grid>
