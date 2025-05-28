@@ -11,7 +11,7 @@ const Footer = () => {
       <Grid direction="column" spacing={5} margin={5}>
         <Grid>
           <ImageListItem sx={{ width: 188, height: 44 }}>
-            <img alt="AletheIA Logo" src="../public/img/AlétheIA.svg" />
+            <img alt="AletheIA Logo" src="../public/img/AletheIA.svg" />
           </ImageListItem>
         </Grid>
         <Grid marginTop={3}>
