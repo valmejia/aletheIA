@@ -13,7 +13,7 @@ const NavBar = () => {
     >
       <Grid>
         <ImageListItem sx={{ width: 188, height: 44 }}>
-          <img alt="aletheia logo" src="../public/img/AlétheIABlack.svg" />
+          <img alt="aletheia logo" src="../public/img/AletheIABlack.svg" />
         </ImageListItem>
       </Grid>
 

@@ -90,7 +90,7 @@ const CustomDashboardLayout: React.FC<CustomDashboardLayoutProps> = ({
           </IconButton>
 
           <ImageListItem sx={{ width: 188, height: 44 }}>
-            <img alt="aletheia logo" src="../public/img/AlétheIA.svg" />
+            <img alt="aletheia logo" src="../public/img/AletheIA.svg" />
           </ImageListItem>
         </Toolbar>
       </AppBar>
@@ -117,7 +117,7 @@ const CustomDashboardLayout: React.FC<CustomDashboardLayoutProps> = ({
         <Toolbar sx={{ justifyContent: "center" }}>
           {open && (
             <ImageListItem sx={{ width: 188, height: 44 }}>
-              <img alt="aletheia logo" src="/img/AlétheIABlack.svg" />
+              <img alt="aletheia logo" src="/img/AletheIABlack.svg" />
             </ImageListItem>
           )}
         </Toolbar>
