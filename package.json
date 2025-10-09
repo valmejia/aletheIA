@@ -9,6 +9,7 @@
     "prettier": "^3.5.3"
   },
   "dependencies": {
+    "httpx": "^3.0.1",
     "keycloak": "^1.2.0",
     "keycloak-js": "^26.2.0"
   }
