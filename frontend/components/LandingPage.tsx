@@ -174,7 +174,7 @@ const LandingPage = () => {
           }}
         >
           <ImageListItem sx={{ width: "40vw", height: "30vh" }}>
-            <img alt="aletheia logo" src="../public/img/amigas.jpeg" />
+            <img alt="aletheia logo" src="../public/img/" />
           </ImageListItem>
         </Grid>
       </Grid>
